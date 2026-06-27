@@ -1,10 +1,7 @@
 package wai.govgymappnew;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,44 +19,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // AdMob banner ad test id: ca-app-pub-3940256099942544/6300978111
-        // my banner ad id: ca-app-pub-2878374163061282/6615438108
-        // change to your own ad id
-        // Change in MainActivity.java and activity_main.xml
+        // AdMob tənzimləmələri
         MobileAds.initialize(this, "ca-app-pub-2878374163061282/6615438108");
         mAdView = (AdView)findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+        // WebView tənzimləmələri
         WebView webview = (WebView) findViewById(R.id.webview);
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
-//        setContentView(webview);
+        webSettings.setDomStorageEnabled(true); // Oyunların açılması üçün vacibdir
 
+        // Linklərin kənara çıxmaması üçün əsas hissə
         webview.setWebViewClient(new WebViewClient() {
-             @Override
-             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                 if (url.endsWith(".pdf")) {
-//                         String pdfUrl = "https://docs.google.com/viewer?url=" + url;
-//                         try {
-//                             String urlEncoded = URLEncoder.encode(pdfUrl, "UTF-8");
-//                             view.loadUrl(urlEncoded);
-//                         } catch (UnsupportedEncodingException e){
-//                             e.printStackTrace();
-//                         }
-                     return false;
-                 } else {
-                         // Otherwise allow the OS to handle it
-                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                         startActivity(intent);
-                         return true;
-                 }
-             }
-         });
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // "false" qaytarmaq linki elə WebView-un özündə açır
+                return false;
+            }
+        });
 
-        // replace this with your own link/web app address
+        // Saytı yüklə
         if (savedInstanceState == null) {
-            webview.loadUrl("www.crazygames.pics");
+            webview.loadUrl("https://www.crazygames.pics");
         }
     }
 
@@ -77,28 +60,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                     return true;
             }
-
         }
         return super.onKeyDown(keyCode, event);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState )
-    {
+    protected void onSaveInstanceState(Bundle outState) {
         WebView webview = (WebView) findViewById(R.id.webview);
-
         super.onSaveInstanceState(outState);
         webview.saveState(outState);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         WebView webview = (WebView) findViewById(R.id.webview);
-
         super.onRestoreInstanceState(savedInstanceState);
         webview.restoreState(savedInstanceState);
     }
-
-
 }
