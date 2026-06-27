@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         // replace this with your own link/web app address
         if (savedInstanceState == null) {
-            webview.loadUrl("http://ec2-18-179-186-35.ap-northeast-1.compute.amazonaws.com/");
+            webview.loadUrl("www.crazygames.pics");
         }
     }
 
